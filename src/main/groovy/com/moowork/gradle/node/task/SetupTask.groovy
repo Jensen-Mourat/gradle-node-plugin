@@ -164,10 +164,36 @@ class SetupTask
 
     private File resolveSingle( String name )
     {
-        def dep = this.project.dependencies.create( name )
-        def conf = this.project.configurations.detachedConfiguration( dep )
-        conf.transitive = false
-        return conf.resolve().iterator().next();
+           String ext = name.split('@')[1]
+           int index = name.indexOf('@')
+           String nameWithout = name.substring(0, index)
+           String[] parts = nameWithout.split(':')
+           String version = parts[2];
+           String os= parts[3];
+           String fileName = "node-v${version}-${os}"
+           String zipName = fileName + ".${ext}"
+//            String path = this.config.distBaseUrl + "/v${version}/" + zipName
+           String path = 'file:///C:/Users/jensen/Downloads/node-v12.14.1-win-x64.zip'
+           String filePath = this.config.workDir.getPath() + File.separator + zipName
+           println filePath
+           File file = new File('./js-compiler/node-v12.14.1-win-x64.zip')
+           println file.exists()
+           if(file.exists()){
+              println '${zipName} already exists, extracting archive'
+              return file
+           } else{
+             file.createNewFile()
+           }
+           println "Downloading ${fileName}. This may take some time"
+           URL url2download = new URL(path)
+           file.bytes = url2download.bytes
+           println "${file.toURI()}"
+           println 'return'
+           return file
+//         def dep = this.project.dependencies.create( name )
+//         def conf = this.project.configurations.detachedConfiguration( dep )
+//         conf.transitive = false
+//         return conf.resolve().iterator().next();
     }
 
     private void addRepository()
