@@ -172,23 +172,23 @@ class SetupTask
            String os= parts[3];
            String fileName = "node-v${version}-${os}"
            String zipName = fileName + ".${ext}"
-//            String path = this.config.distBaseUrl + "/v${version}/" + zipName
-           String path = 'file:///C:/Users/jensen/Downloads/node-v12.14.1-win-x64.zip'
-           String filePath = this.config.workDir.getPath() + File.separator + zipName
-           println filePath
-           File file = new File('./js-compiler/node-v12.14.1-win-x64.zip')
-           println file.exists()
+           String path = this.config.distBaseUrl + "/v${version}/" + zipName
+           String absoluteFilePath = this.config.workDir.getPath() + File.separator + zipName
+           File workDir = new File(this.config.workDir.getPath())
+           if(!workDir.exists()){
+             workDir.mkdirs()
+           }
+           String rootPath = new File('').getAbsolutePath()
+           String filePath = '.' + absoluteFilePath.substring(rootPath.length())
+           File file = new File(filePath)
            if(file.exists()){
-              println '${zipName} already exists, extracting archive'
               return file
            } else{
              file.createNewFile()
            }
-           println "Downloading ${fileName}. This may take some time"
+           println "Downloading ${fileName}. This may take some time."
            URL url2download = new URL(path)
            file.bytes = url2download.bytes
-           println "${file.toURI()}"
-           println 'return'
            return file
 //         def dep = this.project.dependencies.create( name )
 //         def conf = this.project.configurations.detachedConfiguration( dep )
