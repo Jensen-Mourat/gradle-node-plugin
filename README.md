@@ -1,16 +1,21 @@
 # About this fork
 
+
 This is a fork of https://github.com/srs/gradle-node-plugin. Its a gradle great plugin, however it does not work when integrated with InterShop 7.10 (gradle 2.11) and it also does not work when a project uses gradle 6. 
 
 The plugin fails to download the nodejs file from any nodejs dist repository (or mirror) because it keeps looking for an ivy.xml file which is not available for a nodejs artifact. After days of looking for an alternative plugin or solution to run node using gradle, I was forced to get my hands dirty and try to fix this plugin.
 
+
 ## IMPORTANT 
 
-This fix was only tested with having the `download=true` for the node configuration.
+This fix was **only** tested with having the `download=true` for the node configuration.
 
 **Also I neither want nor have the time to publish this fork as a gradle plugin in the gradle plugins repository. Please see how to use this fork below.**
 
+
+
 ## How to use this fork
+
 
 Download the jar in the `plugin-jar` folder. Or you can clone or download the repo, use `gradlew build` and then copy the jar from `./build/libs/`
 
