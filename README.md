@@ -1,69 +1,54 @@
-# Gradle Plugin for Node
+# About this fork
 
-[![Build Status](https://travis-ci.org/srs/gradle-node-plugin.svg?branch=master)](https://travis-ci.org/srs/gradle-node-plugin)
-[![Windows Build status](https://ci.appveyor.com/api/projects/status/06pg08c36mnes0w3?svg=true)](https://ci.appveyor.com/project/srs/gradle-node-plugin)
-[![License](https://img.shields.io/github/license/srs/gradle-node-plugin.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
-![Version](https://img.shields.io/badge/Version-1.3.1-orange.svg)
+This is a fork of https://github.com/srs/gradle-node-plugin. Its a gradle great plugin, however it does not work when integrated with InterShop 7.10 and it also does not work when a project uses gradle 6. 
 
-This plugin enabled you to use a lot of [NodeJS](https://nodejs.org)-based technologies as part of your 
-build without having NodeJS installed locally on your system. It integrates the following NodeJS-based system
-with Gradle:
+The plugin fails to download the nodejs file from any nodejs dist repository (or mirror) because it keeps looking for an ivy.xml file which is not available for a nodejs artifact. After days of looking for an alternative plugin or solution to run node using gradle, I was forced to get my hands dirty and try to fix this plugin.
 
-* [NodeJS](https://nodejs.org)
-* [Yarn](https://yarnpkg.com/)
-* [Grunt](https://gruntjs.com/)
-* [Gulp](https://gulpjs.com/)
+# IMPORTANT 
 
-It's actually 3 plugins in one:
+This fix was only tested with having the `download=true` for the node configuration.
+**Also I neither want nor have the time to publish this fork as a gradle plugin in the gradle plugins repository. Please see how to use this fork below.**
 
-* [Node Plugin](https://plugins.gradle.org/plugin/com.moowork.node) (`com.moowork.node`) - [See docs](docs/node.md).
-* [Grunt Plugin](https://plugins.gradle.org/plugin/com.moowork.grunt) (`com.moowork.grunt`) - [See docs](docs/grunt.md)
-* [Gulp Plugin](https://plugins.gradle.org/plugin/com.moowork.gulp) (`com.moowork.gulp`) - [See docs](docs/gulp.md)
+# How to use this fork
 
+Download the jar in the `plugin-jar` folder. Or you can clone or download the repo, use `gradlew build` and then copy the jar from `./build/libs/`
 
-## Documentation
+Add it to your build.gradle as follows:
 
-Here's how you get started using this plugin. If you do not find what you are looking for, please add an 
-issue to [GitHub Issues](https://github.com/srs/gradle-node-plugin/issues).
+```
+buildscript {
+    dependencies {
+        classpath files('gradle-node-plugin-1.4.0-fixed.jar')
+    }
+}
 
-* [Installing](docs/installing.md)
-* [Node Plugin](docs/node.md)
-* [Grunt Plugin](docs/grunt.md)
-* [Gulp Plugin](docs/gulp.md)
-* [FAQ](docs/faq.md)
-* [Changelog](CHANGELOG.md)
+apply plugin: 'com.moowork.node'
 
-
-## Documentation for older releases
-
-Here's the documentation for older releases of the plugin:
-
-* [1.2.0](https://github.com/srs/gradle-node-plugin/blob/v1.2.0/README.md)
-* [1.1.1](https://github.com/srs/gradle-node-plugin/blob/v1.1.1/README.md)
-* [1.1.0](https://github.com/srs/gradle-node-plugin/blob/v1.1.0/README.md)
-* [1.0.1](https://github.com/srs/gradle-node-plugin/blob/v1.0.1/README.md)
-* [1.0.0](https://github.com/srs/gradle-node-plugin/blob/v1.0.0/README.md)
-* [0.14](https://github.com/srs/gradle-node-plugin/blob/v0.14/README.md)
-* [0.13](https://github.com/srs/gradle-node-plugin/blob/v0.13/README.md)
-* [0.12](https://github.com/srs/gradle-node-plugin/blob/v0.12/README.md)
-* [0.11](https://github.com/srs/gradle-node-plugin/blob/v0.11/README.md)
-* [0.10](https://github.com/srs/gradle-node-plugin/blob/v0.10/README.md)
-
-
-## Building the Plugin
-
-To build the plugin, just type the following command:
-
-```bash
-./gradlew clean build
 ```
 
+Dont forget to set up the node config in your build.gradle
 
-## Contributing
+```
+node {
+    distBaseUrl = 'https://nodejs.org/dist/ or <Your_Mirror>'
+    version = '<Any_Node_Version>'
+    download = true
+    workDir = file("node/node_install") // example path
+    npmWorkDir = file("node/node_install")  // example path
+    nodeModulesDir = file("node") // example path
+  }
 
-Contributions are always welcome! If you'd like to contribute (and we hope you do) please send 
-one of the existing contributors a nudge.
+task npmCI(type: NpmTask) { // example npm ci task
+      args = ['ci']
+}
 
+task test(type: NpmTask, dependsOn: npmCI) { // here is an example of how an npm script is run. This will run "npm run test" 
+      args = ['run', 'test']
+}
+```
+For more information on this plugin please check:
+
+https://github.com/srs/gradle-node-plugin
 
 ## License
 
