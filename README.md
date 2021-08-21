@@ -10,7 +10,7 @@ The plugin fails to download the nodejs file from any nodejs dist repository (or
 
 This fix was **only** tested with having the `download=true` for the node configuration.
 
-**Also I neither want nor have the time to publish this fork as a gradle plugin in the gradle plugins repository. Please see how to use this fork below.**
+**Also I neither want nor have the time to publish this fork as a gradle plugin on a gradle plugin repository. Please see how to use this fork below.**
 
 
 
