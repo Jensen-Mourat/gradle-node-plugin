@@ -173,27 +173,18 @@ class SetupTask
            String fileName = "node-v${version}-${os}"
            String zipName = fileName + ".${ext}"
            String path = this.config.distBaseUrl + "/v${version}/" + zipName
-           String absoluteFilePath = this.config.workDir.getPath() + File.separator + zipName
            File workDir = new File(this.config.workDir.getPath())
            if(!workDir.exists()){
              workDir.mkdirs()
            }
-           String rootPath = new File('').getAbsolutePath()
-           String filePath = '.' + absoluteFilePath.substring(rootPath.length())
-           File file = new File(filePath)
+           File file = new File(this.config.workDir.getPath(), zipName)
            if(file.exists()){
               return file
-           } else{
-             file.createNewFile()
            }
            println "Downloading ${fileName}. This may take some time."
            URL url2download = new URL(path)
            file.bytes = url2download.bytes
            return file
-//         def dep = this.project.dependencies.create( name )
-//         def conf = this.project.configurations.detachedConfiguration( dep )
-//         conf.transitive = false
-//         return conf.resolve().iterator().next();
     }
 
     private void addRepository()
