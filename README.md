@@ -48,7 +48,7 @@ task npmCI(type: NpmTask) { // example npm ci task
       args = ['ci']
 }
 
-task test(type: NpmTask, dependsOn: npmCI) { // here is an example of how an npm script is run. This will run "npm run test" 
+task test(type: NpmTask, dependsOn: npmCI) { // here is an example of how an npm script is execute. This is equivalent to "npm run test".
       args = ['run', 'test']
 }
 ```
